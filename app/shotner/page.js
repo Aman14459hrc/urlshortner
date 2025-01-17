@@ -5,36 +5,38 @@ import { useState } from "react";
 
 
 export default function HomePage() {
-const handler = () => {
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
+  const handler = async () => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
-  const raw = JSON.stringify({
-    url: url,
-    shortUrl: shortUrl,
-  });
-
-  const requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow",
-  };
-
-  fetch("/api/genrate", requestOptions)
-    .then((response) => {
-      console.log("We reached the response");
-      return response.json()
-      // return response.json(); // Parse the response JSON
-    })
-    .then((result) => {
-      console.log("Result from API:", result); // Log the API result
-      alert("Done"); // Notify the user
-    })
-    .catch((error) => {
-      console.error("Error occurred:", error); // Log any errors
+    const raw = JSON.stringify({
+      url: url,
+      shortUrl: shortUrl,
     });
-};
+console.log(raw)
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    try {
+      const response = await fetch("/api/genrate", requestOptions);
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        // Assuming the API returns the short URL
+        setShortUrl(result.shortUrl);
+        // Redirect or update the UI as needed
+        router.push("/success");
+      } else {
+        console.error("Failed to generate short URL");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const [url, setUrl] = useState("https://chatgpt.com/c/678513d1-5b70-800c-a477-406e4eec3c89");
   const [shortUrl, setShortUrl] = useState("");

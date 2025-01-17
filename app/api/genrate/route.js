@@ -3,6 +3,8 @@ import clientPromise from '@/app/lib/mongo.js';
 export  async function POST(request) {
     try {
         const body = await request.json();
+        console.log(body , "sdgfsdfghgfdsfg");
+        
         console.log("Request body:", body);
         const client = await clientPromise;
         const db = client.db("shortner");
@@ -19,14 +21,14 @@ export  async function POST(request) {
 
             // Insert into the collection
             await collect.insertOne({
-                url,
-                shortUrl
+               "url": body.url,
+                "shortUrl":body.shortUrl
             });
 
             return new Response(
                 JSON.stringify({
-                    url,
-                    shortUrl,
+                    "url": body.url,
+                    "shortUrl":body.shortUrl,
                     message: "URL shortened successfully",
                 }),
                 { status: 200 }

@@ -1,9 +1,21 @@
+"use client"
 import { redirect } from "next/navigation";
 import  clientPromise  from "@/app/lib/mongo";
+import { useParams } from 'next/navigation'
+
+
 
 export default async function Page({ params }) {
   try {
-    const shortUrl = params.shorter; // Extract the short URL from params
+    const param = await params;
+    const router = useRouter();
+    const {shorter} = router.query
+    console.log(shorter);
+    
+    
+    const shortUrl = param.shorter; // Extract the short URL from params
+    console.log("Short URL:", shortUrl);
+    
     const client = await clientPromise;
     const db = client.db("shortner");
     const collection = db.collection("urls");
