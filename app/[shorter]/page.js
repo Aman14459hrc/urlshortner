@@ -1,21 +1,15 @@
-"use client"
 import { redirect } from "next/navigation";
 import  clientPromise  from "@/app/lib/mongo";
-import { useParams } from 'next/navigation'
-
-
 
 export default async function Page({ params }) {
+  let redircturl 
   try {
-    const param = await params;
-    const router = useRouter();
-    const {shorter} = router.query
+    // const param = await params;
+    const { shorter} = await params; // 'id'
     console.log(shorter);
     
     
-    const shortUrl = param.shorter; // Extract the short URL from params
-    console.log("Short URL:", shortUrl);
-    
+    const shortUrl = shorter; // Extract the short URL from params
     const client = await clientPromise;
     const db = client.db("shortner");
     const collection = db.collection("urls");
@@ -23,16 +17,25 @@ export default async function Page({ params }) {
     // Find the document with the matching short URL
     const doc = await collection.findOne({ shortUrl: shortUrl });
     console.log("Document found:", doc);
+    console.log("Document found:", doc.url);
 
-    if (doc) {
-      console.log("Redirecting to:", doc.url);
-      redirect(doc.url); // Redirect to the original URL
-    } else {
-      console.warn("Short URL not found. Redirecting to fallback URL.");
-      redirect( "http://localhost:3000"); // Redirect to fallback URL
+    if(doc){
+      redircturl = doc.url
     }
+
+
+  
   } catch (error) {
     console.error("Error during redirect:", error);
     redirect( "http://localhost:3000"); // Redirect on error
+  }
+  finally {
+    if (redircturl) {
+      console.log("Redirecting to:", redircturl);
+      redirect(redircturl); // Redirect to the original URL
+    } else {
+      console.warn("Short URL not found. Redirecting to fallback URL.");
+      // redirect( "http://localhost:3000"); // Redirect to fallback URL
+    }
   }
 }

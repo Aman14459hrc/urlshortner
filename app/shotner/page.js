@@ -112,7 +112,7 @@ console.log(raw)
       >
         Generate
       </button>
-      {genrate && (
+      {(
         <p className="text-green-500" >
           {`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"}/${shortUrl}`}
         </p>
