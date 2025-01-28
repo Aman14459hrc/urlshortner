@@ -29,7 +29,7 @@ console.log(raw)
         // Assuming the API returns the short URL
         setShortUrl(result.shortUrl);
         // Redirect or update the UI as needed
-        router.push("/success");
+        // router.push("/success");
       } else {
         console.error("Failed to generate short URL");
       }
@@ -38,7 +38,7 @@ console.log(raw)
     }
   };
 
-  const [url, setUrl] = useState("https://chatgpt.com/c/678513d1-5b70-800c-a477-406e4eec3c89");
+  const [url, setUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
   const [genrate, setgenrate] = useState("");
   return (
