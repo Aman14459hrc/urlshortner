@@ -11,8 +11,8 @@ export default async function Page({ params }) {
     
     const shortUrl = shorter; // Extract the short URL from params
     const client = await clientPromise;
-    const db = client.db("shortner");
-    const collection = db.collection("urls");
+    const db = await client.db("shortner");
+    const collection = await db.collection("urls");
 
     // Find the document with the matching short URL
     const doc = await collection.findOne({ shortUrl: shortUrl });
